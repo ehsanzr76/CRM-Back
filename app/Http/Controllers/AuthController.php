@@ -22,7 +22,7 @@ class AuthController extends Controller
     public function __construct(AuthRepository $repo)
     {
         $this->RegisterRepo = $repo;
-        $this->middleware('auth:api', ['except' => ['login' ,'register']]);
+        $this->middleware('Jwt', ['except' => ['login', 'register']]);
     }
 
 
@@ -31,7 +31,6 @@ class AuthController extends Controller
         $request->safe()->all();
         $this->RegisterRepo->create($request->name, $request->email, $request->password);
         return $this->login($request);
-
     }
 
     /**
@@ -42,9 +41,13 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
+        $validateData = $request->validate([
+           'email'=>'required|email|exists:users,email|max:255',
+           'password'=>'required|string|min:6'
+        ]);
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -86,11 +89,11 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return JsonResponse
      */
-    protected function respondWithToken($token): JsonResponse
+    protected function respondWithToken(string $token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
