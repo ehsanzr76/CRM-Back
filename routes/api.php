@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,8 @@ Route::group([
     });
 
 
+    ////Employee
+    Route::apiResource('/employee' , EmployeeController::class);
 
 
 });
