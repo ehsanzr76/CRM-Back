@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('phone');
             $table->string('sallery');
             $table->string('address');
-            $table->string('photo')->nullable();
-            $table->string('nid')->nullable();
+            $table->string('photo')->default(1);
+            $table->string('nid');
             $table->string('joining_date');
             $table->timestamps();
         });

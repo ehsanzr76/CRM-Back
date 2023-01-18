@@ -12,7 +12,6 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     | Translated By : LaravelForum.ir Abolfazl Talebi
     */
-
     'accepted' => ':attribute باید تایید شود.',
     'active_url' => ':attribute لینک وارد شده معتبر نیست.',
     'after' => ':attribute تاریخ باید بعد از :date باشد',
@@ -146,6 +145,9 @@ return [
     */
 
     'attributes' => [
+        "joining_date"=>"تاریخ عضویت",
+        "nid"=>"کد ملی",
+        "sallery"=>"حقوق",
         "name" => "نام",
         "username" => "نام کاربری",
         "email" => "آدرس ایمیل",
