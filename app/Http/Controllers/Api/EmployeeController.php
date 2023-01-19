@@ -55,7 +55,7 @@ class EmployeeController extends Controller
             $sub = substr($request->photo, 0, $position);
             $ext = explode('/', $sub)[1];
 
-            $name = time() . "." . $ext;
+            $name = time().".".$ext;
             $img = \Intervention\Image\Facades\Image::make($request->photo)->resize(240,200);
             $upload_path = 'backend/employee/';
             $image_url = $upload_path.$name;
@@ -120,10 +120,20 @@ class EmployeeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy(int $id): Response
+    public function destroy(int $id): JsonResponse
     {
-        //
+        $employee = Employee::query()->where('id' , $id)->first();
+        $photo = $employee->photo;
+        if($photo){
+            unlink($photo);
+            Employee::query()->where('id' , $id)->delete();
+        }else{
+            Employee::query()->where('id' , $id)->delete();
+        }
+        return response()->json([
+           'message'=>'کارمند با موفقیت حذف شد.'
+        ] , Response::HTTP_OK);
     }
 }
