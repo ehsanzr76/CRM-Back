@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEmployeeRequest;
+use App\Models\Employee;
 use App\Repositories\EmployeeRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class EmployeeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreEmployeeRequest $request
-    /**
+     * /**
      * Display a listing of the resource.
      *
      * @return JsonResponse
@@ -55,21 +56,36 @@ class EmployeeController extends Controller
             $ext = explode('/', $sub)[1];
 
             $name = time() . "." . $ext;
-            $img = \Intervention\Image\Facades\Image::make($request->photo)->resize(240, 200);
-            $upload_path = 'backend\employee';
-            $image_url = $upload_path . $name;
+            $img = \Intervention\Image\Facades\Image::make($request->photo)->resize(240,200);
+            $upload_path = 'backend/employee/';
+            $image_url = $upload_path.$name;
             $img->save($image_url);
 
-            $this->EmployeeRepo->create(
-                $request->name,
-                $request->email,
-                $request->phone,
-                $request->photo,
-                $request->address,
-                $request->nid,
-                $request->joining_date,
-                $request->sallery
-            );
+            $employee = new Employee();
+            $employee->name = $request->name;
+            $employee->email = $request->email;
+            $employee->phone = $request->phone;
+            $employee->salary = $request->salary;
+            $employee->address = $request->address;
+            $employee->nid = $request->nid;
+            $employee->joining_date = $request->joining_date;
+            $employee->photo = $image_url;
+            $employee->save();
+            return response()->json([
+                'message' => 'کارمند با موفقیت ایجاد شد.'
+            ], Response::HTTP_CREATED);
+
+
+        } else {
+            $employee = new Employee();
+            $employee->name = $request->name;
+            $employee->email = $request->email;
+            $employee->phone = $request->phone;
+            $employee->salary = $request->salary;
+            $employee->address = $request->address;
+            $employee->nid = $request->nid;
+            $employee->joining_date = $request->joining_date;
+            $employee->save();
             return response()->json([
                 'message' => 'کارمند با موفقیت ایجاد شد.'
             ], Response::HTTP_CREATED);

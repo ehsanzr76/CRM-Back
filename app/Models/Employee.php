@@ -12,7 +12,7 @@ class Employee extends Model
         'name',
         'email',
         'phone',
-        'sallery',
+        'salary',
         'address',
         'photo',
         'nid',

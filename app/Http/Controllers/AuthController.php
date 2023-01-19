@@ -22,7 +22,7 @@ class AuthController extends Controller
     public function __construct(AuthRepository $repo)
     {
         $this->RegisterRepo = $repo;
-        $this->middleware('Jwt', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
 

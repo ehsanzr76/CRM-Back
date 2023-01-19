@@ -25,13 +25,13 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             'name'=>'required|string|unique:employees|max:255',
-            'email'=>'required',
-            'phone'=>'required|string|unique:employees|max:255',
-            'address'=>'required',
-            'sallery'=>'required',
+            'email'=>'required|string|unique:employees|max:255',
+            'phone'=>'required|starts_with:9|digits:10',
+            'address'=>'required|string',
+            'salary'=>'required|not_in:0|numeric',
+            'nid'=>'required|numeric|unique:employees',
             'joining_date'=>'required',
-            'photo'=>'required',
-            'nid'=>'required',
+            'photo'=>'nullable|string'
         ];
     }
 }

@@ -147,7 +147,7 @@ return [
     'attributes' => [
         "joining_date"=>"تاریخ عضویت",
         "nid"=>"کد ملی",
-        "sallery"=>"حقوق",
+        "salary"=>"حقوق",
         "name" => "نام",
         "username" => "نام کاربری",
         "email" => "آدرس ایمیل",
