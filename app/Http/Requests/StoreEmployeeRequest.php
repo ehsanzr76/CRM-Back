@@ -11,7 +11,7 @@ class StoreEmployeeRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -28,7 +28,7 @@ class StoreEmployeeRequest extends FormRequest
             'email'=>'required|string|unique:employees|max:255',
             'phone'=>'required|starts_with:9|digits:10|unique:employees',
             'address'=>'required|string',
-            'salary'=>'required|not_in:0|numeric',
+            'salary'=>'required|numeric',
             'nid'=>'required|numeric|unique:employees',
             'joining_date'=>'required',
             'photo'=>'nullable|string'
