@@ -12,4 +12,6 @@ interface SupplierInterface
     public function index(): Collection;
     public function create($name,$email,$phone,$address,$shop_name): Model;
     public function show($id): Model;
+    public function findId($id): Model;
+    public function destroy($id): bool;
 }

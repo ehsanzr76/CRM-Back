@@ -23,20 +23,30 @@ class SupplierRepository implements SupplierInterface
         return $this->model->latest()->get();
     }
 
-    public function create($name,$email,$phone,$address,$shop_name): Model
+    public function create($name, $email, $phone, $address, $shop_name): Model
     {
         return $this->model->create([
-            'name'=>$name,
-            'email'=>$email,
-            'phone'=>$phone,
-            'address'=>$address,
-            'shop_name'=>$shop_name,
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'address' => $address,
+            'shop_name' => $shop_name,
         ]);
     }
 
     public function show($id): Model
     {
-        return $this->model->where('id' , $id)->first();
+        return $this->model->where('id', $id)->first();
+    }
+
+    public function findId($id): Model
+    {
+        return $this->model->where('id', $id)->first();
+    }
+
+    public function destroy($id): bool
+    {
+        return $this->model->where('id', $id)->delete();
     }
 
 }

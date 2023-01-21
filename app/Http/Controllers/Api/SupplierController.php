@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSupplierRequest;
+use App\Http\Requests\UpdateSupplierRequest;
 use App\Models\Supplier;
 use App\Repositories\SupplierRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -91,36 +91,71 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateSupplierRequest $request
      * @param int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSupplierRequest $request, int $id): JsonResponse
     {
-        //
+        $data = array();
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['phone'] = $request->phone;
+        $data['address'] = $request->address;
+        $data['shop_name'] = $request->shop_name;
+        $image = $request->newphoto;
+        if ($image) {
+            $position = strpos($image, ';');
+            $sub = substr($image, 0, $position);
+            $ext = explode('/', $sub)[1];
+
+            $name = time() . "." . $ext;
+            $img = Image::make($image)->resize(240, 200);
+            $upload_path = 'backend/supplier/';
+            $image_url = $upload_path . $name;
+            $success = $img->save($image_url);
+
+            if ($success) {
+                $data['photo'] = $image_url;
+                $img = $this->SupplierRepo->findId($id);
+                $image_path = $img->photo;
+                $done = unlink($image_path);
+                $supplier = Supplier::query()->where('id', $id)->update($data);
+
+
+            }
+            return response()->json([
+                'message' => 'تامین کننده با موفقیت ویرایش شد.'
+            ], Response::HTTP_OK);
+
+        } else {
+            $oldphoto = $request->photo;
+            $data['photo'] = $oldphoto;
+            $supplier = Supplier::query()->where('id', $id)->update($data);
+
+        }
+        return response()->json([
+            'message' => 'تامین کننده با موفقیت ویرایش شد.'
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        $supplier = $this->SupplierRepo->findId($id);
+        $photo = $supplier->photo;
+        if ($photo) {
+            unlink($photo);
+            return response()->json($this->SupplierRepo->destroy($id), Response::HTTP_OK);
+        } else {
+            return response()->json($this->SupplierRepo->destroy($id), Response::HTTP_OK);
+        }
     }
 }
