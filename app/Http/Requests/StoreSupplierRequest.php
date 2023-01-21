@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEmployeeRequest extends FormRequest
+class StoreSupplierRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -24,13 +24,11 @@ class StoreEmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|unique:employees|max:255',
-            'email'=>'required|string|unique:employees,email|max:255',
-            'phone'=>'required|starts_with:9|digits:10|unique:employees',
+            'name'=>'required|string|unique:suppliers|max:255',
+            'email'=>'required|string|unique:suppliers,email|max:255',
+            'phone'=>'required|starts_with:9|digits:10|unique:suppliers',
             'address'=>'required|string',
-            'salary'=>'required|numeric',
-            'nid'=>'required|numeric|unique:employees',
-            'joining_date'=>'required',
+            'shop_name'=>'nullable|string',
             'photo'=>'nullable|string'
         ];
     }

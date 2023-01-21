@@ -76,15 +76,15 @@ class EmployeeController extends Controller
 
 
         } else {
-            $employee = new Employee();
-            $employee->name = $request->name;
-            $employee->email = $request->email;
-            $employee->phone = $request->phone;
-            $employee->salary = $request->salary;
-            $employee->address = $request->address;
-            $employee->nid = $request->nid;
-            $employee->joining_date = $request->joining_date;
-            $employee->save();
+          $this->EmployeeRepo->create(
+            $request->input('name'),
+            $request->input('email'),
+            $request->input('phone'),
+            $request->input('salary'),
+            $request->input('address'),
+            $request->input('nid'),
+            $request->input('joining_date'),
+          );
             return response()->json([
                 'message' => 'کارمند با موفقیت ایجاد شد.'
             ], Response::HTTP_CREATED);

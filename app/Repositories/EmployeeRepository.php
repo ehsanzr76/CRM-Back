@@ -24,6 +24,19 @@ class EmployeeRepository implements EmployeeInterface
         return $this->model->latest()->get();
     }
 
+    public function create($name, $email, $phone, $salary, $address, $nid, $joining_date): Model
+    {
+        return $this->model->create([
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'salary' => $salary,
+            'address' => $address,
+            'nid' => $nid,
+            'joining_date' => $joining_date,
+        ]);
+    }
+
     public function show($id): Model
     {
         return $this->model->where('id', $id)->first();
