@@ -39,19 +39,19 @@ class EmployeeRepository implements EmployeeInterface
 
     public function show($id): Model
     {
-        return $this->model->where('id', $id)->first();
+        return $this->model->find($id)->first();
     }
 
     public function destroy($id): bool
     {
-        return $this->model->where('id', $id)->delete();
+        return $this->model->find($id)->delete();
 
     }
 
 
     public function findId($id): Model
     {
-        return $this->model->where('id', $id)->first();
+        return $this->model->find($id)->first();
 
     }
 

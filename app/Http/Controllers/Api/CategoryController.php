@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class CategoryController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json($this->CategoryRepo->index() , Response::HTTP_OK);
+        return response()->json($this->CategoryRepo->index(), Response::HTTP_OK);
     }
 
 
@@ -43,52 +44,46 @@ class CategoryController extends Controller
     {
         $this->CategoryRepo->create($request->input('name'));
         return response()->json([
-           'message'=>'دسته بندی با موفقیت ایجاد شد'
-        ] , Response::HTTP_CREATED);
+            'message' => 'دسته بندی با موفقیت ایجاد شد'
+        ], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json($this->CategoryRepo->show($id), Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateCategoryRequest $request
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request): JsonResponse
     {
-        //
+        $this->CategoryRepo->update(
+            $request->input('id'),
+            $request->input('name')
+        );
+        return response()->json([
+            'message' => 'دسته بندی با موفقیت ویرایش شد'
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
-        //
+        return response()->json($this->CategoryRepo->destroy($id) , Response::HTTP_OK);
     }
 }

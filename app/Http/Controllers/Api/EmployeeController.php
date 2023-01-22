@@ -137,7 +137,7 @@ class EmployeeController extends Controller
                 $img = $this->EmployeeRepo->findId($id);
                 $image_path = $img->photo;
                 $done = unlink($image_path);
-                $employee = Employee::query()->where('id', $id)->update($data);
+                $employee = Employee::query()->find($id)->update($data);
 
 
             }
@@ -148,10 +148,10 @@ class EmployeeController extends Controller
         } else {
             $oldphoto = $request->photo;
             $data['photo'] = $oldphoto;
-            $employee = Employee::query()->where('id', $id)->update($data);
+            $employee = Employee::query()->find($id)->update($data);
 
         }
-        return \response()->json([
+        return response()->json([
             'message' => 'کارمند با موفقیت ویرایش شد.'
         ], Response::HTTP_OK);
     }

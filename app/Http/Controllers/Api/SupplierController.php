@@ -122,7 +122,7 @@ class SupplierController extends Controller
                 $img = $this->SupplierRepo->findId($id);
                 $image_path = $img->photo;
                 $done = unlink($image_path);
-                $supplier = Supplier::query()->where('id', $id)->update($data);
+                $supplier = Supplier::query()->find($id)->update($data);
 
 
             }
@@ -133,7 +133,7 @@ class SupplierController extends Controller
         } else {
             $oldphoto = $request->photo;
             $data['photo'] = $oldphoto;
-            $supplier = Supplier::query()->where('id', $id)->update($data);
+            $supplier = Supplier::query()->find($id)->update($data);
 
         }
         return response()->json([

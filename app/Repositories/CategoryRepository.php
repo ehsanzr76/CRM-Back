@@ -6,12 +6,13 @@ namespace App\Repositories;
 
 use App\Interfaces\CategoryInterface;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class CategoryRepository implements CategoryInterface
 {
-    private \Illuminate\Database\Eloquent\Builder $model;
+    private Builder $model;
 
     public function __construct()
     {
@@ -29,6 +30,23 @@ class CategoryRepository implements CategoryInterface
            'name'=>$name
         ]);
 
+    }
+
+    public function show($id): Model
+    {
+        return $this->model->where('id' ,$id)->first();
+    }
+
+    public function update($id,$name): bool
+    {
+        return $this->model->find($id)->update([
+           'name'=>$name
+        ]);
+    }
+
+    public function destroy($id): bool
+    {
+        return $this->model->find($id)->delete();
     }
 
 }
