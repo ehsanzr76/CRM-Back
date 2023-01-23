@@ -125,11 +125,18 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        $product = $this->ProductRepo->findId($id);
+        $photo = $product->photo;
+        if ($photo){
+            unlink($photo);
+            return response()->json($this->ProductRepo->destroy($id) , Response::HTTP_OK);
+        }else{
+            return response()->json($this->ProductRepo->destroy($id) , Response::HTTP_OK);
+        }
     }
 }

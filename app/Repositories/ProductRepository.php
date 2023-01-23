@@ -40,5 +40,15 @@ class ProductRepository implements ProductInterface
         ]);
     }
 
+    public function findId($id): Model
+    {
+        return $this->model->find($id)->first();
+    }
+
+    public function destroy($id):bool
+    {
+        return $this->model->find($id)->delete();
+    }
+
 }
 
