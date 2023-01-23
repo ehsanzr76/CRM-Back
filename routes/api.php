@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,7 @@ Route::group([
 
     ////Category
     Route::apiResource('/category' , CategoryController::class);
+
+    ////Product
+    Route::apiResource('/product' , ProductController::class);
 });

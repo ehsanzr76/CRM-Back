@@ -145,6 +145,8 @@ return [
     */
 
     'attributes' => [
+        "selling_price"=>"قیمت فروش",
+        "quantity"=>"تعداد محصول",
         "joining_date"=>"تاریخ عضویت",
         "nid"=>"کد ملی",
         "salary"=>"حقوق",
