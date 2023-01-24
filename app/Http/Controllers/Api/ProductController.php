@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\JsonResponse;
@@ -31,7 +32,7 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json($this->ProductRepo->index() , Response::HTTP_OK);
+        return response()->json($this->ProductRepo->index(), Response::HTTP_OK);
     }
 
 
@@ -91,35 +92,67 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        //
+        return response()->json($this->ProductRepo->show($id), Response::HTTP_OK);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateProductRequest $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, int $id): JsonResponse
     {
-        //
+        $data = array();
+        $data['name'] = $request->name;
+        $data['buying_price'] = $request->buying_price;
+        $data['selling_price'] = $request->selling_price;
+        $data['quantity'] = $request->quantity;
+        $data['buying_date'] = $request->buying_date;
+        $data['product_code'] = $request->product_code;
+        $data['root'] = $request->root;
+        $data['category_id'] = $request->category_id;
+        $data['supplier_id'] = $request->supplier_id;
+        $image = $request->newphoto;
+        if ($image) {
+            $position = strpos($image, ';');
+            $sub = substr($image, 0, $position);
+            $ext = explode('/', $sub)[1];
+
+            $name = time() . "." . $ext;
+            $img = Image::make($image)->resize(240, 200);
+            $upload_path = 'backend/product/';
+            $image_url = $upload_path . $name;
+            $success = $img->save($image_url);
+
+            if ($success) {
+                $data['photo'] = $image_url;
+                $img = $this->ProductRepo->findId($id);
+                $image_path = $img->photo;
+                $done = unlink($image_path);
+                $product = Product::query()->find($id)->update($data);
+
+            }
+            return response()->json([
+                'message' => 'محصول با موفقیت ویرایش شد.'
+            ], Response::HTTP_OK);
+
+        } else {
+            $oldphoto = $request->photo;
+            $data['photo'] = $oldphoto;
+            $product = Product::query()->find($id)->update($data);
+
+        }
+        return response()->json([
+            'message' => 'محصول با موفقیت ویرایش شد.'
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -132,11 +165,11 @@ class ProductController extends Controller
     {
         $product = $this->ProductRepo->findId($id);
         $photo = $product->photo;
-        if ($photo){
+        if ($photo) {
             unlink($photo);
-            return response()->json($this->ProductRepo->destroy($id) , Response::HTTP_OK);
-        }else{
-            return response()->json($this->ProductRepo->destroy($id) , Response::HTTP_OK);
+            return response()->json($this->ProductRepo->destroy($id), Response::HTTP_OK);
+        } else {
+            return response()->json($this->ProductRepo->destroy($id), Response::HTTP_OK);
         }
     }
 }

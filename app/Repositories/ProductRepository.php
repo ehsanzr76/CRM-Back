@@ -45,7 +45,12 @@ class ProductRepository implements ProductInterface
         return $this->model->find($id)->first();
     }
 
-    public function destroy($id):bool
+    public function show($id): Model
+    {
+        return $this->model->find($id)->first();
+    }
+
+    public function destroy($id): bool
     {
         return $this->model->find($id)->delete();
     }

@@ -13,5 +13,6 @@ interface ProductInterface
     public function index(): Collection;
     public function create($name,$buying_price,$selling_price,$quantity,$buying_date,$product_code,$root,$category_id,$supplier_id): Model;
     public function findId($id): Model;
-    public function destroy($id):bool;
+    public function show($id): Model;
+    public function destroy($id): bool;
 }
